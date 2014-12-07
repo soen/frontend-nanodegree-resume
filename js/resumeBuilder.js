@@ -1,3 +1,6 @@
+// TODO: Encapsulate each 'render' bit into a func, and pass
+// in the relevant data to these (elem in DOM to insert into, and the JSON data)
+
 // Define replacement tag
 var replacementTag = "%data%";
 
@@ -18,6 +21,7 @@ var bio = {
   "skills": [ "HTML5", "CSS3", "JavaScript", "C#" ]
 };
 
+// Define education
 var education = {
   "schools": [
     {
@@ -44,6 +48,7 @@ var education = {
   ]
 };
 
+// Define work employments
 var work = {
   "jobs": [
     {
@@ -63,6 +68,7 @@ var work = {
   ]
 };
 
+// Define projects
 var projects = {
   "projects": [
     {
@@ -97,7 +103,7 @@ var formattedRole = HTMLheaderRole.replace(replacementTag, bio.role);
 header.prepend(formattedRole);
 header.prepend(formattedName);
 
-// Add contact info
+// Add contact info (top)
 var topContacts = $("#topContacts");
 
 var formattedMobile =
@@ -141,3 +147,42 @@ bio.skills.forEach(function(skill) {
   var formattedSkill = HTMLskills.replace(replacementTag, skill);
   skills.append(formattedSkill);
 });
+
+// Loop over each distinctive work experience, format it and append it to the
+// list of work experiences
+var workExperience = $("#workExperience");
+work.jobs.forEach(function(job) {
+  // Create a new work entry from the work-entry HTML template
+  var workEntry = $(HTMLworkStart);
+
+  // Format the job informations
+  var formattedWorkEmployer =
+    HTMLworkEmployer.replace(replacementTag, job.employer);
+  var formattedWorkTitle =
+    HTMLworkTitle.replace(replacementTag, job.title);
+  var formattedWorkDates =
+    HTMLworkDates.replace(replacementTag, job.dates);
+  var formattedWorkLocation =
+    HTMLworkLocation.replace(replacementTag, job.location);
+  var formattedWorkDescription =
+    HTMLworkDescription.replace(replacementTag, job.description);
+
+  // Append the info to the entry elem
+  workEntry.append(formattedWorkEmployer + formattedWorkTitle);
+  workEntry.append(formattedWorkDates);
+  workEntry.append(formattedWorkLocation);
+  workEntry.append(formattedWorkDescription);
+
+  // Addpend the work-entry elem to the work experience list
+  workEntry.appendTo(workExperience);
+});
+
+// Add contact info (footer)
+var footerContacts = $("#footerContacts");
+
+footerContacts.append(formattedMobile);
+footerContacts.append(formattedEmail);
+footerContacts.append(formattedTwitter);
+footerContacts.append(formattedGitHub);
+footerContacts.append(formattedBlog);
+footerContacts.append(formattedLocation);
