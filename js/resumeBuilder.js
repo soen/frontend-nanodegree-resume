@@ -27,8 +27,9 @@ var education = {
     {
       "name": "IT-University of Copenhagen",
       "location": "Copenhagen, Denmark",
-      "city": "Copenhagen",
+      "dates": "2009-2012",
       "degree": "BSc",
+      "url": "http://www.itu.dk",
       "majors": ["Software Development"]
     }
   ],
@@ -142,16 +143,25 @@ header.append(formattedWelcomeMsg);
 header.append(HTMLskillsStart);
 
 // Loop over each distinctive skill, format it and append it to the list of skills
-var skills = $("#skills");
+var skillsList = $("#skills");
 bio.skills.forEach(function(skill) {
   var formattedSkill = HTMLskills.replace(replacementTag, skill);
-  skills.append(formattedSkill);
+  skillsList.append(formattedSkill);
 });
 
 // Loop over each distinctive work experience, format it and append it to the
 // list of work experiences
-var workExperience = $("#workExperience");
+var workExperienceList = $("#workExperience");
 work.jobs.forEach(function(job) {
+
+  // NOTE: In the project specification it is suggested that one uses the
+  // syntax $(".work-entry:last").append(...); to add content to the work entry
+  // container. Another option is to simply wrap the work-entry HTML template
+  // in a jQuery selector and add content directly to it instead. This should
+  // yeild better performance, since we don't keep selecting the 'last' elem in
+  // the work-entry div, but instead just adding content to the wrapped work-
+  // entry template selector.
+
   // Create a new work entry from the work-entry HTML template
   var workEntry = $(HTMLworkStart);
 
@@ -173,9 +183,116 @@ work.jobs.forEach(function(job) {
   workEntry.append(formattedWorkLocation);
   workEntry.append(formattedWorkDescription);
 
-  // Addpend the work-entry elem to the work experience list
-  workEntry.appendTo(workExperience);
+  // Append the entry elem to the work experience list
+  workEntry.appendTo(workExperienceList);
 });
+
+// Loop over each distinctive project, format it and append it to the
+// list of projects
+var projectList = $("#projects");
+projects.projects.forEach(function(project) {
+  // Create a new project entry from the project-entry HTML template
+  var projectEntry = $(HTMLprojectStart);
+
+  // Format the project informations
+  var formattedProjectTitle =
+    HTMLprojectTitle.replace(replacementTag, project.title);
+  var formattedProjectDates =
+    HTMLprojectDates.replace(replacementTag, project.dates);
+  var formattedProjectDescription =
+    HTMLprojectDescription.replace(replacementTag, project.description);
+
+  var formattedProjectImages = "";
+  project.images.forEach(function(image) {
+      // Format the specified image
+      var formattedProjectImage =
+        HTMLprojectImage.replace(replacementTag, image);
+
+      // Append the formatted image to the list of formatted images
+      formattedProjectImages = formattedProjectImages + formattedProjectImage;
+  });
+
+  // Append the info to the entry elem
+  projectEntry.append(formattedProjectTitle);
+  projectEntry.append(formattedProjectDates);
+  projectEntry.append(formattedProjectDescription);
+  projectEntry.append(formattedProjectImages);
+
+  // Append the entry elem to the projects list
+  projectEntry.appendTo(projectList);
+});
+
+// Loop over each distinctive education (school and online course), format it
+// and append it to the list of educations
+var educationList = $("#education");
+
+education.schools.forEach(function(school) {
+  // Create a new school entry from the school-entry HTML template
+  var schoolEntry = $(HTMLschoolStart);
+
+  // Format the school informations
+  var formattedSchoolName =
+    HTMLschoolName.replace("#", school.url)
+                  .replace(replacementTag, school.name);
+  var formattedSchoolDegree =
+    HTMLschoolDegree.replace(replacementTag, school.degree);
+  var formattedSchoolDates =
+    HTMLschoolDates.replace(replacementTag, school.dates);
+  var formattedSchoolLocation =
+    HTMLschoolLocation.replace(replacementTag, school.location);
+
+  var formattedSchoolMajors = "";
+  school.majors.forEach(function(major) {
+      // Format the specified major
+      var formattedSchoolMajor =
+        HTMLschoolMajor.replace(replacementTag, major);
+
+      // Append the formatted major to the list of formatted majors
+      formattedSchoolMajors = formattedSchoolMajors + formattedSchoolMajor;
+  });
+
+  // Append the info to the entry elem
+  schoolEntry.append(formattedSchoolName + formattedSchoolDegree);
+  schoolEntry.append(formattedSchoolDates);
+  schoolEntry.append(formattedSchoolLocation);
+  schoolEntry.append(formattedSchoolMajors);
+
+  // Append the entry elem to the education list
+  schoolEntry.appendTo(educationList);
+});
+
+// Check if we should add any online courses
+if (education.onlineCourses.length > 0) {
+    // If so, append the online courses heading before appending any courses
+    educationList.append(HTMLonlineClasses);
+
+    education.onlineCourses.forEach(function(onlineCourse) {
+      var onlineCourseEntry = $(HTMLschoolStart);
+
+      // Format the online course informations
+      var formattedOnlineTitle =
+        HTMLonlineTitle.replace("#", onlineCourse.url)
+                       .replace(replacementTag, onlineCourse.title);
+      var formattedOnlineSchool =
+        HTMLonlineSchool.replace(replacementTag, onlineCourse.school);
+      var formattedOnlineDates =
+        HTMLonlineDates.replace(replacementTag, onlineCourse.dates);
+      var formattedOnlineUrl =
+        HTMLonlineURL.replace("#", onlineCourse.url)
+                     .replace(replacementTag, onlineCourse.url);
+
+      // Append the info to the entry elem
+      onlineCourseEntry.append(formattedOnlineTitle + formattedOnlineSchool);
+      onlineCourseEntry.append(formattedOnlineDates);
+      onlineCourseEntry.append(formattedOnlineUrl);
+
+      // Append the entry elem to the education list
+      onlineCourseEntry.appendTo(educationList);
+    });
+}
+
+// Add Google maps
+$("#mapDiv").append(googleMap);
 
 // Add contact info (footer)
 var footerContacts = $("#footerContacts");
