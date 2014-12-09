@@ -1,5 +1,8 @@
-// TODO: Encapsulate each 'render' bit into a func, and pass
-// in the relevant data to these (elem in DOM to insert into, and the JSON data)
+// TODO:
+// 1. Encapsulate each 'render' bit into a func, and pass
+//    in the relevant data to these (elem in DOM to insert into, and the JSON data)
+// 2. Refactor the code within the forEach closures, to have bits for each logic
+//    part of the code block (formatting, appending, etc.)
 
 // Define replacement tag
 var replacementTag = "%data%";
