@@ -79,7 +79,8 @@ var bio = {
     // Add skills list
     header.append(HTMLskillsStart);
 
-    // Loop over each distinctive skill, format it and append it to the list of skills
+    // Loop over each distinctive skill, format it and
+    // append it to the list of skills
     var skillsList = $("#skills");
     bio.skills.forEach(function(skill) {
       var formattedSkill = HTMLskills.replace(replacementTag, skill);
@@ -117,9 +118,7 @@ var education = {
   render: function() {
     var educationList = $("#education");
 
-    // Loop over each distinctive education (school and online course), format it
-    // and append it to the list of educations
-    education.schools.forEach(function(school) {
+    var getFormattedSchool = function(school) {
       // Create a new school entry from the school-entry HTML template
       var schoolEntry = $(HTMLschoolStart);
 
@@ -150,8 +149,37 @@ var education = {
       schoolEntry.append(formattedSchoolLocation);
       schoolEntry.append(formattedSchoolMajors);
 
-      // Append the entry elem to the education list
-      schoolEntry.appendTo(educationList);
+      return schoolEntry;
+    };
+
+    var getFormattedOnlineCourse = function(onlineCourse) {
+      var onlineCourseEntry = $(HTMLschoolStart);
+
+      // Format the online course informations
+      var formattedOnlineTitle =
+        HTMLonlineTitle.replace("#", onlineCourse.url)
+                       .replace(replacementTag, onlineCourse.title);
+      var formattedOnlineSchool =
+        HTMLonlineSchool.replace(replacementTag, onlineCourse.school);
+      var formattedOnlineDates =
+        HTMLonlineDates.replace(replacementTag, onlineCourse.dates);
+      var formattedOnlineUrl =
+        HTMLonlineURL.replace("#", onlineCourse.url)
+                     .replace(replacementTag, onlineCourse.url);
+
+      // Append the info to the entry elem
+      onlineCourseEntry.append(formattedOnlineTitle + formattedOnlineSchool);
+      onlineCourseEntry.append(formattedOnlineDates);
+      onlineCourseEntry.append(formattedOnlineUrl);
+
+      return onlineCourseEntry;
+    };
+
+    // Loop over each distinctive school, format it and
+    // append it to the list of educations
+    education.schools.forEach(function(school) {
+      var formattedSchool = getFormattedSchool(school);
+      formattedSchool.appendTo(educationList);
     });
 
     // Check if we should add any online courses
@@ -159,28 +187,11 @@ var education = {
       // If so, append the online courses heading before appending any courses
       educationList.append(HTMLonlineClasses);
 
+      // Loop over each distinctive online course, format it and
+      // append it to the list of educations
       education.onlineCourses.forEach(function(onlineCourse) {
-        var onlineCourseEntry = $(HTMLschoolStart);
-
-        // Format the online course informations
-        var formattedOnlineTitle =
-          HTMLonlineTitle.replace("#", onlineCourse.url)
-                         .replace(replacementTag, onlineCourse.title);
-        var formattedOnlineSchool =
-          HTMLonlineSchool.replace(replacementTag, onlineCourse.school);
-        var formattedOnlineDates =
-          HTMLonlineDates.replace(replacementTag, onlineCourse.dates);
-        var formattedOnlineUrl =
-          HTMLonlineURL.replace("#", onlineCourse.url)
-                       .replace(replacementTag, onlineCourse.url);
-
-        // Append the info to the entry elem
-        onlineCourseEntry.append(formattedOnlineTitle + formattedOnlineSchool);
-        onlineCourseEntry.append(formattedOnlineDates);
-        onlineCourseEntry.append(formattedOnlineUrl);
-
-        // Append the entry elem to the education list
-        onlineCourseEntry.appendTo(educationList);
+        var formattedOnlineCourse = getFormattedOnlineCourse(onlineCourse);
+        formattedOnlineCourse.appendTo(educationList);
       });
     }
   }
@@ -207,9 +218,7 @@ var work = {
   render: function() {
     var workExperienceList = $("#workExperience");
 
-    // Loop over each distinctive work experience, format it and append it to the
-    // list of work experiences
-    work.jobs.forEach(function(job) {
+    var getFormattedWork = function(job) {
       // Create a new work entry from the work-entry HTML template
       var workEntry = $(HTMLworkStart);
 
@@ -231,8 +240,14 @@ var work = {
       workEntry.append(formattedWorkLocation);
       workEntry.append(formattedWorkDescription);
 
-      // Append the entry elem to the work experience list
-      workEntry.appendTo(workExperienceList);
+      return workEntry;
+    };
+
+    // Loop over each distinctive work experience, format it and
+    // append it to the list of work experiences
+    work.jobs.forEach(function(job) {
+      var formattedWork = getFormattedWork(job);
+      formattedWork.appendTo(workExperienceList);
     });
   }
 };
@@ -260,9 +275,7 @@ var projects = {
   render: function() {
     var projectList = $("#projects");
 
-    // Loop over each distinctive project, format it and append it to the
-    // list of projects
-    projects.projects.forEach(function(project) {
+    var getFormattedProject = function(project) {
       // Create a new project entry from the project-entry HTML template
       var projectEntry = $(HTMLprojectStart);
 
@@ -290,23 +303,27 @@ var projects = {
       projectEntry.append(formattedProjectDescription);
       projectEntry.append(formattedProjectImages);
 
-      // Append the entry elem to the projects list
-      projectEntry.appendTo(projectList);
+      return projectEntry;
+    };
+
+    // Loop over each distinctive project, format it and append it to the
+    // list of projects
+    projects.projects.forEach(function(project) {
+      var formattedProject = getFormattedProject(project);
+      formattedProject.appendTo(projectList);
     });
   }
 };
 
-var initGoogleMaps = function() {
-  // Add Google maps
-  $("#mapDiv").append(googleMap);
-};
-
 var renderResume = function() {
-    initGoogleMaps();
-    bio.render();
+    // Add Google maps
+    $("#mapDiv").append(googleMap);
+
+    // Render resume sections
     projects.render();
     work.render();
     education.render();
+    bio.render();
 };
 
 // Render the resume
