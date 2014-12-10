@@ -23,10 +23,10 @@ var bio = {
     blog: "http://soen.ghost.io",
     location: "Copenhagen, Denmark"
   },
-  bioPic: "images/fry.jpg",
+  bioPic: "https://pbs.twimg.com/profile_images/432482930317737985/UcpOzfnf.jpeg",
   welcomeMessage: "Welcome to the world of tomorrow",
   skills: [
-    "HTML5", "CSS3", "JavaScript", "C#"
+    "HTML5", "CSS3", "Sass", "JavaScript", "C#"
   ],
   render: function() {
     var header = $("#header");
@@ -106,13 +106,13 @@ var education = {
       title: "Intro to HTML and CSS",
       school: "Udacity",
       dates: "2014",
-      url: "TODO"
+      url: "www.udacity.com"
     },
     {
       title: "JavaScript Basics",
       school: "Udacity",
       dates: "2014",
-      url: "TODO"
+      url: "www.udacity.com"
     }
   ],
   render: function() {
@@ -205,14 +205,14 @@ var work = {
       title: "Software Analyst",
       location: "Kgs. Lyngby, Denmark",
       dates: "2009-2014",
-      description: "TODO"
+      description: "Just a grunt developer"
     },
     {
       employer: "Netcompany A/S",
       title: "Developer",
       location: "Copenhagen, Denmark",
       dates: "2014",
-      description: "TODO"
+      description: "30% Back-end and 70% Front-end"
     }
   ],
   render: function() {
@@ -258,17 +258,20 @@ var projects = {
     {
       title: "Mockup Website",
       dates: "2014",
-      description: "TODO",
+      description: "This project is simply a mockup website.",
       images: [
-        "imagesUrl1a", "imagesUrl2a", "imagesUrl3a"
+        "http://lorempixel.com/300/200/",
+        "http://lorempixel.com/300/200/"
       ]
     },
     {
       title: "Resume",
       dates: "2014",
-      description: "TODO",
+      description: "This project is an interactive resume.",
       images: [
-        "imagesUrl1b", "imagesUrl2b", "imagesUrl3b"
+        "http://lorempixel.com/300/200/",
+        "http://lorempixel.com/300/200/",
+        "http://lorempixel.com/300/200/"
       ]
     }
   ],
