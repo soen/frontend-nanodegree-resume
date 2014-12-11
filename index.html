@@ -15,6 +15,9 @@ need to load. You'll see a lot of <link>s to CSS files for styles and
 <scripts> for JavaScript files to build interactions.
 -->
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width">
+
   <link href="css/style.css" rel="stylesheet" type="text/css" />
 
   <!--
@@ -40,9 +43,7 @@ need to load. You'll see a lot of <link>s to CSS files for styles and
   Google Map to your resume!
   -->
   <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?libraries=places"></script>
-
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width">
+  <script src="http://d3js.org/d3.v3.min.js"></script>
 </head>
 <body unresolved>
   <div id="main">
@@ -67,6 +68,9 @@ need to load. You'll see a lot of <link>s to CSS files for styles and
     </div>
     <div id="skillsChart">
       <h2>Skills Chart</h2>
+      <div id="chartDiv">
+        <div class="chart"></div>
+      </div>
     </div>
     <div id="mapDiv">
       <h2>Where I've Lived and Worked</h2>

@@ -153,6 +153,10 @@ img {
   padding: 10px;
 }
 
+#chartDiv {
+  padding-left: 5%;
+  padding-right: 5%;
+}
 
 /* Bar chart stuff */
 .chart div {
@@ -163,7 +167,7 @@ img {
   margin: 1px;
   height: 12px;
   color: white;
-  display: inline-block;
+  /*display: inline-block;*/
 }
 
 span {

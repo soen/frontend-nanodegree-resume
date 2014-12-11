@@ -26,7 +26,26 @@ var bio = {
   bioPic: "https://pbs.twimg.com/profile_images/432482930317737985/UcpOzfnf.jpeg",
   welcomeMessage: "Welcome to the world of tomorrow",
   skills: [
-    "HTML5", "CSS3", "Sass", "JavaScript", "C#"
+      {
+        name:"HTML5",
+        rating: 4
+      },
+      {
+        name:"CSS3",
+        rating: 5
+      },
+      {
+        name:"Sass",
+        rating: 6
+      },
+      {
+        name:"JavaScript",
+        rating: 4
+      },
+      {
+        name:"C#",
+        rating: 10
+      }
   ],
   render: function() {
     var header = $("#header");
@@ -83,7 +102,7 @@ var bio = {
     // append it to the list of skills
     var skillsList = $("#skills");
     bio.skills.forEach(function(skill) {
-      var formattedSkill = HTMLskills.replace(replacementTag, skill);
+      var formattedSkill = HTMLskills.replace(replacementTag, skill.name);
       skillsList.append(formattedSkill);
     });
   }
@@ -319,8 +338,56 @@ var projects = {
 };
 
 var renderResume = function() {
-    // Add Google maps
-    $("#mapDiv").append(googleMap);
+
+    var renderGoogleMaps = function() {
+      // Add Google maps
+      $("#mapDiv").append(googleMap);
+    };
+
+    var renderSkillsChart = function() {
+
+      var render = function(width) {
+        // References:
+        // - http://bost.ocks.org/mike/bar/
+        // - http://stackoverflow.com/questions/11488194/how-to-use-d3-min-and-d3-max-within-a-d3-json-command
+        var x = d3.scale.linear()
+                  .domain([0,d3.max(bio.skills, function(d) { return d.rating; })])
+                  .range([0, width]);
+
+        d3.select(".chart")
+          .selectAll("div")
+          .data(bio.skills)
+          .enter()
+          .append("div")
+          .style("width", function(d) { return x(d.rating) + "px"; })
+          .attr("class", "skills-entry")
+          .text(function(d) { return d.name + " (" + d.rating + ")"; });
+      };
+
+      var invalidate = function() {
+        var container = $("#chartDiv");
+
+        // Calculate new width
+        var paddingLeft = parseInt(container.css('padding-left').replace("px", ""));
+        var paddingRight = parseInt(container.css('padding-right').replace("px", ""));
+        var width = container.width() - (paddingLeft + paddingRight);
+
+        // Clear previous chart content
+        $(".chart").empty();
+
+        // Render new chart content
+        render(width);
+      };
+
+      // Invalidate the chart content when resizing the window
+      $(window).on("resize", function() {
+        invalidate();
+      }).trigger("resize");
+    };
+
+    // Render Skills Chart and Google Maps
+    renderSkillsChart();
+    renderGoogleMaps();
 
     // Render resume sections
     projects.render();
